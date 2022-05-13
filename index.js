@@ -12,18 +12,18 @@ const server = express()
 
 //Conectar com o banco do mongoDB
 mongoose
-    .connect('mongodb+srv://vinicius:super123@apicluster.eaftv.mongodb.net/bancoapi?retryWrites=true&w=majority')
-    .then(() => {
-        const host = '0.0.0.0'
-        const PORT = process.env.PORT || 3000
-        //Configurar a porta
-        server.listen(PORT, host, () => {
-            console.log("Servidor conectado ao MongoDB...")
-        })
-    })
-    .catch((err) => {console.log(err)})
+    .connect('mongodb+srv://vinicius:super123@apicluster.eaftv.mongodb.net/bancoapi?retryWrites=true&w=majority', 
+    {
+        useUnifiedTopology: true,
+        useNewUrlParser: true,
+    }
+)
 
-//Habilitar a leitura e recebimento de json // middlewares -> estabelece como será nossa comunicação com o banco.
+//Configurar a porta
+const PORT = process.env.PORT || 3000
+server.listen(PORT, () => {
+    console.log("Servidor conectado ao MongoDB...")
+})
 
 server.use(
     express.urlencoded({
