@@ -1,23 +1,28 @@
 //Importar o pacote do express
 const express = require('express')
-
 //Importar o pacote do mongoose
 const mongoose = require('mongoose')
-
 //Importar a entidade Movie
 const Movie = require('./models/Movie')
+//Importar as variaveis de ambiente
+require('dotenv').config()
+//Importar as rotas
+const movieRouter = require('./routes/movies')
 
 //Inicializar o pacote
 const server = express()
 
 //Conectar com o banco do mongoDB
 mongoose
-    .connect('mongodb+srv://vinicius:super123@apicluster.eaftv.mongodb.net/bancoapi?retryWrites=true&w=majority', 
-    {
-        useUnifiedTopology: true,
-        useNewUrlParser: true,
-    }
-)
+    .connect(process.env.DATABASE_URL, 
+        {
+            useNewUrlParser: true,
+        }
+    ).then(() => {
+        console.log("Conectado ao mongo db atlas")
+    }).catch((erro) => {
+        console.log(erro)
+    })
 
 //Configurar a porta
 const PORT = process.env.PORT || 3000
@@ -47,12 +52,6 @@ server.post('/movie', async(req, res) => {
     //Pegar as informações do corpo da nossa requisição 
     const {name, year, streaming} = req.body
 
-    //Validar as informações
-    if (!name) {
-        res.status(422).json({message: 'Nome é obrigatório'})
-        return
-    }
-
     //Colocar as informações em um objeto chamado movie
     const movie = {
         name,
@@ -72,8 +71,6 @@ server.post('/movie', async(req, res) => {
         //enviar uma resposta com o erro
         res.status(500).json({message: error})
     }
-
-
 })
 
 //Criar uma rota para listar todos os filmes cadastrados (GET)
