@@ -14,9 +14,10 @@ const server = express()
 mongoose
     .connect('mongodb+srv://vinicius:super123@apicluster.eaftv.mongodb.net/bancoapi?retryWrites=true&w=majority')
     .then(() => {
-        const PORT = process.env.PORT
+        const host = '0.0.0.0'
+        const PORT = process.env.PORT || 3000
         //Configurar a porta
-        server.listen(PORT, () => {
+        server.listen(PORT, host, () => {
             console.log("Servidor conectado ao MongoDB...")
         })
     })
