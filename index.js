@@ -6,8 +6,7 @@ const mongoose = require('mongoose')
 const Movie = require('./models/Movie')
 //Importar as variaveis de ambiente
 require('dotenv').config()
-//Importar as rotas
-const movieRouter = require('./routes/movies')
+
 
 //Inicializar o pacote
 const server = express()
